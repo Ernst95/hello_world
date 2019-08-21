@@ -3,7 +3,15 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      home: HomeScreen()
+    );
+  }
+}
 
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
@@ -36,11 +44,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           /*3*/
-          Icon(
-            Icons.star,
-            color: Colors.grey[500],
-          ),
-          Text('41'),
+          FavouriteWidget(),
         ],
       ),
     );
@@ -50,7 +54,16 @@ class MyApp extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: color),
+          IconButton(
+            icon: Icon(icon),
+            color: color,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FirstRoute()),
+              );
+            },
+          ),
           Container(
             margin: const EdgeInsets.only(top: 8),
             child: Text(
@@ -92,9 +105,19 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    return MaterialApp(
-      title: 'Flutter layout demo',
-      home: Scaffold(
+    Widget submitButton = Container(
+      child: RaisedButton(
+        child: Text('Open Route'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FirstRoute()),
+          );
+        },
+      ),
+    );
+
+    return Scaffold(
         appBar: AppBar(
           title: Text('Flutter layout demo'),
         ),
@@ -109,9 +132,75 @@ class MyApp extends StatelessWidget {
             titleSection,
             buttonSection,
             textSection,
+            submitButton,
           ],
+        ),
+      );
+  }
+}
+
+class FavouriteWidget extends StatefulWidget {
+  @override
+  _FavouriteWidgetState createState() => _FavouriteWidgetState();
+}
+
+class _FavouriteWidgetState extends State<FavouriteWidget> {
+  bool _isFavourited = true;
+  int _favouriteCount = 41;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.all(0),
+          child: IconButton(
+            icon: (_isFavourited ? Icon(Icons.star) : Icon(Icons.star_border)),
+            color: Colors.red[500],
+            onPressed: _toggleFavourite,
+          ),
+        ),
+        SizedBox(
+          width: 18,
+          child: Container(
+            child: Text('$_favouriteCount'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _toggleFavourite() {
+    setState(() {
+      if (_isFavourited) {
+        _favouriteCount -= 1;
+        _isFavourited = false;
+      } else {
+        _favouriteCount += 1;
+        _isFavourited = true;
+      }
+    });
+  }
+
+}
+
+class FirstRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Route'),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text('Go back!'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
     );
   }
+
 }
