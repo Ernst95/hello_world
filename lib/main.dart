@@ -5,8 +5,15 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: HomeScreen()
+    return MaterialApp(
+      // Start the app with the "/" named route. In this case, the app starts
+      // on the FirstScreen widget.
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/second': (context) => SecondScreen(),
+      }
+
     );
   }
 }
@@ -58,10 +65,7 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(icon),
             color: color,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => FirstRoute()),
-              );
+              Navigator.pushNamed(context, '/second');
             },
           ),
           Container(
@@ -109,10 +113,7 @@ class HomeScreen extends StatelessWidget {
       child: RaisedButton(
         child: Text('Open Route'),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FirstRoute()),
-          );
+          Navigator.pushNamed(context, '/second');
         },
       ),
     );
@@ -185,7 +186,7 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
 
 }
 
-class FirstRoute extends StatelessWidget {
+class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
