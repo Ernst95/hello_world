@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeScreen(),
         '/second': (context) => SecondScreen(),
+        '/passArguments': (context) => PassArgumentsScreen(),
       }
 
     );
@@ -118,6 +119,32 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
+    Widget passButton = Container(
+      child: RaisedButton(
+        child: Text('Pass Arguments Screen'),
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/passArguments',
+            arguments: ScreenArguments(
+              'Pass Arguments Screen',
+              'This message is extracted in the build method.',
+            ),
+          );
+        },
+      ),
+    );
+
+    Widget buttonNavigationSection = Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          submitButton,
+          passButton,
+        ],
+      ),
+    );
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Flutter layout demo'),
@@ -133,7 +160,7 @@ class HomeScreen extends StatelessWidget {
             titleSection,
             buttonSection,
             textSection,
-            submitButton,
+            buttonNavigationSection,
           ],
         ),
       );
@@ -204,4 +231,36 @@ class SecondScreen extends StatelessWidget {
     );
   }
 
+}
+
+class ScreenArguments {
+  final String title;
+  final String message;
+
+  ScreenArguments(this.title, this.message);
+}
+
+class PassArgumentsScreen extends StatelessWidget {
+  //static const routeName = '/extractArguments';
+
+  final String title;
+  final String message;
+
+  const PassArgumentsScreen({
+    Key key,
+    @required this.title,
+    @required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: Text(message),
+      ),
+    );
+  }
 }
